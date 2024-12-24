@@ -1,0 +1,11 @@
+import{jsx as _jsx}from"react/jsx-runtime";import{useState,useEffect}from"react";export function withACCProfit(Component){return props=>{const[accProfit,setAccProfit]=useState(0);const fetchACCProfit=async()=>{try{console.log("Fetching ACCProfit...");const response=await fetch("https://thedataineed.info/qhash/beta2/summery.json");const result=await response.json();// Access the 'ACCProfit' key
+if(result&&typeof result["ACCProfit"]==="number"){// Round to 4 decimal places
+const newACCProfit=parseFloat(result["ACCProfit"]).toFixed(4);console.log("Fetched ACCProfit:",newACCProfit);setAccProfit(newACCProfit);}else{console.error("Unexpected data format or missing 'ACCProfit':",result);}}catch(error){console.error("Error fetching 'ACCProfit':",error);setAccProfit(0);}};useEffect(()=>{// Fetch the ACCProfit initially
+fetchACCProfit();// Set up an interval to fetch the ACCProfit every 10 seconds
+const intervalId=setInterval(fetchACCProfit,1e4)// Fetch every 10 seconds
+;// Return a cleanup function to clear the interval when the component unmounts
+return()=>{clearInterval(intervalId);console.log("Interval cleared");};},[])// Empty dependency array ensures that this effect runs only once
+;// Render the original component with the updated accProfit state
+return /*#__PURE__*/_jsx(Component,{...props,text:accProfit!==0?accProfit.toString():props.text});};}
+export const __FramerMetadata__ = {"exports":{"withACCProfit":{"type":"reactHoc","name":"withACCProfit","annotations":{"framerContractVersion":"1"}},"__FramerMetadata__":{"type":"variable"}}}
+//# sourceMappingURL=./Total_Profitfix_Taken.map

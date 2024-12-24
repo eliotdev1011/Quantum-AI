@@ -1,0 +1,8 @@
+import{jsx as _jsx}from"react/jsx-runtime";import{useState,useEffect}from"react";// Utility function to format numbers with commas
+const formatNumber=num=>{return num.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});};export function withEthPrice(Component){return props=>{const[ethPrice,setEthPrice]=useState("0.00")// Default value in the desired format
+;const[multiplier,setMultiplier]=useState(.5)// Set multiplier to 0.5 by default
+;const fetchEthPrice=async()=>{try{console.log("Fetching ETH price...");const response=await fetch("https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT");const result=await response.json();if(result&&typeof result.price==="string"){const newEthPrice=parseFloat(result.price)// Parse as float
+;console.log("Fetched ETH price:",newEthPrice);setEthPrice(newEthPrice);}else{console.error("Unexpected data format or missing ETH price:",result);}}catch(error){console.error("Error fetching ETH price:",error);}};useEffect(()=>{fetchEthPrice();const intervalId=setInterval(fetchEthPrice,1e4);return()=>clearInterval(intervalId);},[]);const displayText=formatNumber(parseFloat(ethPrice)*multiplier)// Format the multiplied value with commas
+;console.log("Displayed text:",displayText);return /*#__PURE__*/_jsx(Component,{...props,text:displayText});};}
+export const __FramerMetadata__ = {"exports":{"withEthPrice":{"type":"reactHoc","name":"withEthPrice","annotations":{"framerContractVersion":"1"}},"__FramerMetadata__":{"type":"variable"}}}
+//# sourceMappingURL=./P1DailyAVG.map

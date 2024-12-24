@@ -1,0 +1,7 @@
+import{jsx as _jsx}from"react/jsx-runtime";import{useState,useEffect,useCallback}from"react";export function withQHASHHolders(Component){return props=>{const[holdersCount,setHoldersCount]=useState("0")// Default value in the desired format
+;const[multiplier,setMultiplier]=useState(1)// Set multiplier to 1 by default
+;const fetchHoldersCount=useCallback(async()=>{try{console.log("Fetching QHASH holders count...");const response=await fetch("https://thedataineed.info/qhash/holderscount.json");const result=await response.json();if(result&&typeof result.holders==="string"){const newHoldersCount=(parseInt(result.holders)*multiplier).toString()// Convert to number and apply multiplier
+;console.log("Fetched QHASH holders count:",newHoldersCount);setHoldersCount(newHoldersCount);}else{console.error("Unexpected data format or missing holders count:",result);}}catch(error){console.error("Error fetching QHASH holders count:",error);}},[multiplier]);useEffect(()=>{fetchHoldersCount();const intervalId=setInterval(fetchHoldersCount,1e4);return()=>clearInterval(intervalId);},[fetchHoldersCount]);const displayText=`${holdersCount}`// Display holders count as text
+;console.log("Displayed text:",displayText);return /*#__PURE__*/_jsx(Component,{...props,text:displayText});};}
+export const __FramerMetadata__ = {"exports":{"withQHASHHolders":{"type":"reactHoc","name":"withQHASHHolders","annotations":{"framerContractVersion":"1"}},"__FramerMetadata__":{"type":"variable"}}}
+//# sourceMappingURL=./QHASH_Holders.map

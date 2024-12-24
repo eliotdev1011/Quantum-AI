@@ -1,0 +1,11 @@
+import{jsx as _jsx}from"react/jsx-runtime";import{useState,useEffect}from"react";export function withDailyROI(Component){return props=>{const[dailyROI,setDailyROI]=useState(0);const fetchDailyROI=async()=>{try{console.log("Fetching Daily ROI...");const response=await fetch("https://thedataineed.info/qhash/beta2/summery.json");const result=await response.json();// Access the 'Daily ROI' key
+if(result&&typeof result["Daily ROI"]==="number"){// Round to 4 decimal places
+const newDailyROI=parseFloat(result["Daily ROI"]).toFixed(4);console.log("Fetched Daily ROI:",newDailyROI);setDailyROI(newDailyROI);}else{console.error("Unexpected data format or missing 'Daily ROI':",result);}}catch(error){console.error("Error fetching 'Daily ROI':",error);setDailyROI(0);}};useEffect(()=>{// Fetch the Daily ROI initially
+fetchDailyROI();// Set up an interval to fetch the Daily ROI every 10 seconds
+const intervalId=setInterval(fetchDailyROI,1e4)// Fetch every 10 seconds
+;// Cleanup interval on component unmount
+return()=>{clearInterval(intervalId);console.log("Interval cleared");};},[])// Empty dependency array to run only once
+;// Render the original component with the updated dailyROI state
+return /*#__PURE__*/_jsx(Component,{...props,text:dailyROI!==0?dailyROI.toString():props.text});};}
+export const __FramerMetadata__ = {"exports":{"withDailyROI":{"type":"reactHoc","name":"withDailyROI","annotations":{"framerContractVersion":"1"}},"__FramerMetadata__":{"type":"variable"}}}
+//# sourceMappingURL=./DailyAVGROI.map

@@ -1,0 +1,11 @@
+import{jsx as _jsx}from"react/jsx-runtime";import{useState,useEffect}from"react";export function withMonthlyProjection(Component){return props=>{const[monthlyProjection,setMonthlyProjection]=useState(0);const fetchMonthlyProjection=async()=>{try{console.log("Fetching Monthly Projection...");const response=await fetch("https://thedataineed.info/qhash/beta2/summery.json");const result=await response.json();// Access the 'Monthly Projection' key
+if(result&&typeof result["Monthly Projection"]==="number"){// Round to 4 decimal places
+const newMonthlyProjection=parseFloat(result["Monthly Projection"]).toFixed(4);console.log("Fetched Monthly Projection:",newMonthlyProjection);setMonthlyProjection(newMonthlyProjection);}else{console.error("Unexpected data format or missing 'Monthly Projection':",result);}}catch(error){console.error("Error fetching 'Monthly Projection':",error);setMonthlyProjection(0);}};useEffect(()=>{// Fetch the Monthly Projection initially
+fetchMonthlyProjection();// Set up an interval to fetch the Monthly Projection every 10 seconds
+const intervalId=setInterval(fetchMonthlyProjection,1e4)// Fetch every 10 seconds
+;// Cleanup interval on component unmount
+return()=>{clearInterval(intervalId);console.log("Interval cleared");};},[])// Empty dependency array to run only once
+;// Render the original component with the updated monthlyProjection state
+return /*#__PURE__*/_jsx(Component,{...props,text:monthlyProjection!==0?monthlyProjection.toString():props.text});};}
+export const __FramerMetadata__ = {"exports":{"withMonthlyProjection":{"type":"reactHoc","name":"withMonthlyProjection","annotations":{"framerContractVersion":"1"}},"__FramerMetadata__":{"type":"variable"}}}
+//# sourceMappingURL=./Monthly_Projection.map

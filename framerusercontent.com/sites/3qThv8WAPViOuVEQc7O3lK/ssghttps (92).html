@@ -1,0 +1,11 @@
+import{jsx as _jsx}from"react/jsx-runtime";import{useState,useEffect}from"react";export function withAVGDailyProfit(Component){return props=>{const[avgDailyProfit,setAvgDailyProfit]=useState(0);const fetchAVGDailyProfit=async()=>{try{console.log("Fetching AVG Daily Profit...");const response=await fetch("https://thedataineed.info/qhash/beta2/summery.json");const result=await response.json();// Access the 'AVG Daily Profit' key
+if(result&&typeof result["AVG Daily Profit"]==="number"){// Round to 4 decimal places
+const newAvgDailyProfit=parseFloat(result["AVG Daily Profit"]).toFixed(4);console.log("Fetched AVG Daily Profit:",newAvgDailyProfit);setAvgDailyProfit(newAvgDailyProfit);}else{console.error("Unexpected data format or missing 'AVG Daily Profit':",result);}}catch(error){console.error("Error fetching 'AVG Daily Profit':",error);setAvgDailyProfit(0);}};useEffect(()=>{// Fetch the AVG Daily Profit initially
+fetchAVGDailyProfit();// Set up an interval to fetch the AVG Daily Profit every 10 seconds
+const intervalId=setInterval(fetchAVGDailyProfit,1e4)// Fetch every 10 seconds
+;// Return a cleanup function to clear the interval when the component unmounts
+return()=>{clearInterval(intervalId);console.log("Interval cleared");};},[])// Empty dependency array ensures that this effect runs only once
+;// Render the original component with the updated avgDailyProfit state
+return /*#__PURE__*/_jsx(Component,{...props,text:avgDailyProfit!==0?avgDailyProfit.toString():props.text});};}
+export const __FramerMetadata__ = {"exports":{"withAVGDailyProfit":{"type":"reactHoc","name":"withAVGDailyProfit","annotations":{"framerContractVersion":"1"}},"__FramerMetadata__":{"type":"variable"}}}
+//# sourceMappingURL=./DailyAVGProfit.map

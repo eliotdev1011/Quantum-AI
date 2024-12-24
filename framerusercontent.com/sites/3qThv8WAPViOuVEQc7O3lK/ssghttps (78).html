@@ -1,0 +1,7 @@
+import{jsx as _jsx}from"react/jsx-runtime";import{useState,useEffect,useCallback}from"react";export function withQHASHPrice(Component){return props=>{const[qhashPrice,setQhashPrice]=useState("0.00000")// Default value in the desired format
+;const[multiplier,setMultiplier]=useState(1)// Set multiplier to 1 by default
+;const fetchQhashPrice=useCallback(async()=>{try{console.log("Fetching QHASH price...");const response=await fetch("https://thedataineed.info/qhash/tokenprice.json");const result=await response.json();if(result&&typeof result.QHASH==="number"){const newQhashPrice=result.QHASH.toFixed(5)// Round to five decimal places and format as string
+;console.log("Fetched QHASH price:",newQhashPrice);setQhashPrice(newQhashPrice);}else{console.error("Unexpected data format or missing QHASH price:",result);}}catch(error){console.error("Error fetching QHASH price:",error);}},[]);useEffect(()=>{fetchQhashPrice();const intervalId=setInterval(fetchQhashPrice,1e4);return()=>clearInterval(intervalId);},[fetchQhashPrice]);const displayText=`$${(parseFloat(qhashPrice)*multiplier).toFixed(5)}`// Add dollar symbol in front and round the multiplied value to five decimal places
+;console.log("Displayed text:",displayText);return /*#__PURE__*/_jsx(Component,{...props,text:displayText});};}
+export const __FramerMetadata__ = {"exports":{"withQHASHPrice":{"type":"reactHoc","name":"withQHASHPrice","annotations":{"framerContractVersion":"1"}},"__FramerMetadata__":{"type":"variable"}}}
+//# sourceMappingURL=./QHASH_Price.map

@@ -1,0 +1,10 @@
+import{jsx as _jsx}from"react/jsx-runtime";import{useState,useEffect}from"react";export function withTotalTXs(Component){return props=>{const[totalTXs,setTotalTXs]=useState(0);const fetchTotalTXs=async()=>{try{console.log("Fetching Total TX...");const response=await fetch("https://thedataineed.info/qhash/beta2/logs_session_BXX04.json");const result=await response.json();// Access the 'Total TX' key
+if(result&&typeof result["Total TX"]==="number"){const newTotalTXs=result["Total TX"];console.log("Fetched Total TX:",newTotalTXs);setTotalTXs(newTotalTXs);}else{console.error("Unexpected data format or missing 'Total TX':",result);}}catch(error){console.error("Error fetching 'Total TX':",error);setTotalTXs(0);}};useEffect(()=>{// Fetch the Total TX initially
+fetchTotalTXs();// Set up an interval to fetch the Total TX every 10 seconds
+const intervalId=setInterval(fetchTotalTXs,1e4)// Fetch every 10 seconds
+;// Return a cleanup function to clear the interval when the component unmounts
+return()=>{clearInterval(intervalId);console.log("Interval cleared");};},[])// Empty dependency array ensures that this effect runs only once
+;// Render the original component with the updated totalTXs state
+return /*#__PURE__*/_jsx(Component,{...props,text:totalTXs!==0?`${totalTXs.toString()}`:props.text});};}
+export const __FramerMetadata__ = {"exports":{"withTotalTXs":{"type":"reactHoc","name":"withTotalTXs","annotations":{"framerContractVersion":"1"}},"__FramerMetadata__":{"type":"variable"}}}
+//# sourceMappingURL=./Total_TXs_Fix_4.map
